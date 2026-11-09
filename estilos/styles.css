@@ -1,0 +1,399 @@
+/* ============ VARIABLES ============ */
+:root {
+    --ink: #f7ead0;
+    --muted: #c8b99f;
+    --gold: #e7ad45;
+    --gold-light: #ffd77f;
+    --line: rgba(231, 173, 69, .35);
+    --paper-text: #2d1b0e;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    color: var(--ink);
+    background:
+        radial-gradient(ellipse at 50% -20%, rgba(119, 62, 24, .38), transparent 55%),
+        linear-gradient(145deg, #0d0908, #21120d 55%, #100b09);
+    font-family: Georgia, "Times New Roman", serif;
+    line-height: 1.7;
+    padding: 30px 15px;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ============ BOTONES ============ */
+.btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 44px;
+    padding: 10px 20px;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    color: var(--ink);
+    background: rgba(255,255,255,.04);
+    cursor: pointer;
+    font: 600 .9rem Arial, sans-serif;
+    transition: all .25s ease;
+}
+.btn:hover {
+    transform: translateY(-1px);
+    border-color: var(--gold);
+    background: rgba(231,173,69,.15);
+}
+.btn-primary {
+    color: #28170b;
+    border-color: var(--gold-light);
+    background: linear-gradient(135deg, var(--gold-light), #c68125);
+}
+.btn-primary:hover {
+    background: linear-gradient(135deg, #ffe4a3, #df9b36);
+}
+
+/* ============ TEXTURAS ============ */
+/* CORREGIDO: Rutas con ../ para salir de la carpeta estilos */
+.leather-bg {
+    background: url("../img/contraportada-cuero.png") center / cover;
+    border: 1px solid rgba(255, 207, 100, .4);
+    box-shadow: inset 0 0 60px rgba(0,0,0,.8), 0 10px 30px rgba(0,0,0,.6);
+}
+
+.paper-panel {
+    color: var(--paper-text);
+    /* El marco Y el interior salen de la misma imagen con "fill": quedan
+       perfectamente alineados. El estirado del centro no se nota porque
+       el pergamino es una textura uniforme. */
+    border: 90px solid transparent;
+    border-image: url("../img/fondo-paginas-diario.jpg") 110 fill / 90px stretch;
+    background: #e9d9b4;
+    box-shadow: 0 16px 42px rgba(0,0,0,.4);
+    position: relative;
+}
+.paper-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 240, 200, 0.08);
+    pointer-events: none;
+    z-index: 0;
+}
+.paper-panel > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* ============ PORTADA ============ */
+.portada {
+    max-width: 720px;
+    margin: 0 auto 40px;
+    padding: 40px 20px;
+    text-align: center;
+    border-radius: 6px;
+}
+
+/* Contenedor con perspectiva para el efecto 3D al pasar el mouse */
+.portada-link {
+    display: block;
+    width: min(420px, 85%);
+    margin: 0 auto 25px;
+    perspective: 1000px;
+}
+.portada-img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    border-radius: 4px 12px 12px 4px;
+    box-shadow:
+        14px 18px 34px rgba(0,0,0,.7),
+        inset -5px 0 15px rgba(0,0,0,.8),
+        5px 0 0 #4c2912,
+        8px 0 0 #1b100b;
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+
+/* El libro se inclina y se levanta al pasar el mouse, como si lo fueras a abrir */
+.portada-link:hover .portada-img {
+    transform: rotateY(-6deg) translateY(-4px);
+    box-shadow:
+        22px 26px 44px rgba(0,0,0,.75),
+        inset -5px 0 15px rgba(0,0,0,.8),
+        5px 0 0 #4c2912,
+        8px 0 0 #1b100b;
+}
+
+.portada-pista {
+    font-size: .8rem;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin: 0 0 8px;
+    font-style: italic;
+}
+
+/* ============ VERSIÓN PARA IMPRIMIR / PDF ============ */
+/* Página oculta en pantalla: solo se ve al imprimir o guardar como PDF */
+.pagina-print {
+    display: none;
+}
+@media print {
+    body {
+        background: #fff;
+        color: #000;
+        padding: 0;
+    }
+    .nav-pagina {
+        display: none;
+    }
+    .portada-print {
+        display: block;
+        text-align: center;
+        page-break-after: always;
+    }
+    .portada-print img {
+        width: 55%;
+        margin: 40px auto;
+        display: block;
+    }
+    .portada-print h1 {
+        font-size: 22pt;
+        margin-bottom: 4px;
+    }
+    .portada-print .autor {
+        font-style: italic;
+        font-size: 12pt;
+    }
+    .pagina-print {
+        display: block;
+        padding: 20px 0;
+        page-break-before: always;
+        page-break-after: always;
+        background: none;
+        box-shadow: none;
+        border: none;
+        color: #000;
+    }
+    .pagina-print .pagina-header {
+        font-size: 14pt;
+        margin-bottom: 16px;
+    }
+    .pagina-print p {
+        font-size: 11pt;
+        line-height: 1.6;
+        color: #000;
+    }
+    .cierre-print {
+        text-align: center;
+        page-break-before: always;
+    }
+}
+.portada-texto h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    color: var(--gold-light);
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+    text-shadow: 0 0 20px rgba(231,173,69,.5);
+}
+.portada-texto .autor {
+    font-style: italic;
+    color: var(--muted);
+    letter-spacing: 2px;
+    margin-bottom: 22px;
+}
+
+/* ============ COPYRIGHT ============ */
+.copyright {
+    max-width: 720px;
+    margin: 0 auto 40px;
+    padding: 25px 35px;
+    font-size: .85rem;
+    text-align: center;
+    border-radius: 4px;
+    line-height: 1.6;
+}
+
+/* ============ ÍNDICE ============ */
+.indice {
+    max-width: 720px;
+    margin: 0 auto 40px;
+    padding: 50px 45px;
+    border-radius: 4px;
+}
+.indice h2 {
+    text-align: center;
+    font-size: 2rem;
+    letter-spacing: 4px;
+    color: #351d0c;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+}
+.indice h2::after {
+    content: "";
+    display: block;
+    width: 80px;
+    height: 2px;
+    background: #a56b26;
+    margin: 14px auto 0;
+}
+.lista-indice {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.lista-indice a {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    padding: 12px 10px;
+    border-bottom: 1px solid rgba(91,52,22,.25);
+    color: #301a0c;
+    font-size: 1.05rem;
+    transition: all .2s;
+}
+.lista-indice a:hover {
+    color: #854d12;
+    background: rgba(255,255,255,.15);
+    padding-left: 18px;
+}
+.num {
+    color: #8c5a20;
+    font: 700 .85rem Arial, sans-serif;
+}
+
+/* ============ PÁGINAS / CAPÍTULOS ============ */
+.pagina {
+    max-width: 760px;
+    margin: 0 auto 40px;
+    /* Más espacio arriba para que el encabezado/fecha quede DEBAJO de la
+       franja decorativa de la imagen, dentro de la zona del pergamino */
+    padding: 90px 45px 40px;
+    border-radius: 4px;
+    min-height: 600px;
+}
+
+/* NUEVO: Encabezado de fecha o título en la página */
+.pagina-header {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #4a2e10;
+    margin-bottom: 25px;
+    font-style: italic;
+    border-bottom: 1px solid rgba(91,52,22,.2);
+    padding-bottom: 10px;
+    display: inline-block;
+}
+
+.pagina p {
+    text-align: justify;
+    margin-bottom: 20px;
+    color: #301a0c;
+    font-size: 1.02rem;
+    line-height: 1.75;
+}
+
+/* Letra capital solo para el primer párrafo después del encabezado */
+.pagina-header + p::first-letter {
+    font-size: 3.4em;
+    float: left;
+    line-height: .85;
+    margin: 4px 12px 0 0;
+    color: #8c5a20;
+    font-weight: bold;
+}
+
+/* ============ CITA ============ */
+blockquote {
+    margin: 30px 0;
+    padding: 18px 25px;
+    border-left: 4px solid #a56b26;
+    background: rgba(140, 90, 32, .12);
+    font-style: italic;
+    color: #4a2e10;
+    border-radius: 0 4px 4px 0;
+    font-size: 1.05rem;
+}
+
+/* ============ NAVEGACIÓN ENTRE PÁGINAS ============ */
+.nav-pagina {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 40px;
+    padding-top: 25px;
+    border-top: 1px solid rgba(91,52,22,.3);
+}
+.nav-pagina .btn {
+    flex: 1;
+    color: #351d0c;
+    border-color: rgba(91,52,22,.4);
+    background: rgba(255,255,255,.4);
+}
+.nav-pagina .btn:hover {
+    background: rgba(255,255,255,.7);
+    border-color: #a56b26;
+}
+.nav-pagina .btn-primary {
+    color: #28170b;
+    background: linear-gradient(135deg, #ffd77f, #c68125);
+    border-color: #c68125;
+}
+
+/* ============ CONTINUARÁ ============ */
+.continuara {
+    max-width: 720px;
+    margin: 0 auto 40px;
+    padding: 80px 40px;
+    text-align: center;
+    border-radius: 4px;
+}
+.continuara h2 {
+    font-size: 2.2rem;
+    letter-spacing: 5px;
+    color: #351d0c;
+    margin-bottom: 20px;
+    font-style: italic;
+}
+.continuara p {
+    color: #4a2e10;
+    margin-bottom: 30px;
+    font-size: 1.05rem;
+}
+
+/* ============ CONTRAPORTADA ============ */
+.contraportada {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    border-radius: 6px;
+    text-align: center;
+}
+.contraportada-img {
+    display: block;
+    width: min(400px, 80%);
+    margin: 0 auto;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    border-radius: 4px 12px 12px 4px;
+    box-shadow:
+        14px 18px 34px rgba(0,0,0,.7),
+        inset -5px 0 15px rgba(0,0,0,.8);
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 640px) {
+    body { padding: 15px 10px; }
+    .indice { padding: 35px 25px; }
+    .pagina { padding: 35px 25px; min-height: auto; }
+    .pagina p { font-size: .97rem; }
+    .nav-pagina { flex-direction: column; }
+    .portada-img { width: 90%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+}
